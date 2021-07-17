@@ -30,15 +30,17 @@ class game {
                 case 37:
                 case 65:
                     move = -this.getWidth() / 4;
+                    this.g.chAngle = -5;
                     break;
                 case 39:
                 case 68:
                     move = this.getWidth() / 4;
+                    this.g.chAngle = 5;
                     break;
             }
         })
         document.addEventListener("keyup", key => {
-            move = 0;
+            move = this.g.chAngle = 0;
         })
     }
 
