@@ -1,4 +1,5 @@
 game_W = 0, game_H = 0;
+let c = 0;
 
 class game {
     constructor() {
@@ -39,6 +40,9 @@ class game {
     loop() {
         this.update();
         this.draw();
+        setTimeout(() => {
+            this.loop();
+        }, 30);
     }
 
     update() {
@@ -47,11 +51,15 @@ class game {
 
  
     render() {
-        if (game_W != document.documentElement.clientWidth || game_H != document.documentElement.clientHeight) {
-            this.canvas.width = document.documentElement.clientWidth;
+        if (game_W != document.documentElement.clientWidth * c|| game_H != document.documentElement.clientHeight) {
             this.canvas.height = document.documentElement.clientHeight;
+            this.canvas.width = document.documentElement.clientWidth;
+            if (this.canvas.width > this.canvas.height)
+                this.canvas.width = this.canvas.height / 1.5;
+
             game_W = this.canvas.width;
             game_H = this.canvas.height;
+            c = game_W / document.documentElement.clientWidth;
         }
     }
 
