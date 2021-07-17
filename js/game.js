@@ -12,8 +12,8 @@ class game {
         this.canvas = document.createElement("canvas");
         this.context = this.canvas.getContext("2d");
         document.body.appendChild(this.canvas);
-        this.v = new virus(this, 100);
         this.render();
+        this.v = new virus(this, game_W / 2, game_H / 2, 100);
         this.loop();
 
         this.listenMouse();
