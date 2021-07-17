@@ -1,13 +1,7 @@
 game_W = 0, game_H = 0;
 let c = 0;
 vis = [];
-
-var gun_Im = new Image();
-gun_Im.src = "images/gun.png";
-
-var wheel_im = new Image();
-wheel_im.src = "images/wheel.png";
-
+move = 0;
 
 class game {
     constructor() {
@@ -22,9 +16,30 @@ class game {
         document.body.appendChild(this.canvas);
         this.render();
         vis[0] = new virus(this, game_W / 2, 0, this.getWidth() * 7, 3);
+        this.g = new gun(this, game_W / 2, game_H - this.getWidth() * 3);
+
         this.loop();
 
         this.listenMouse();
+        this.listenKeyboard();
+    }
+
+    listenKeyboard() {
+        document.addEventListener("keydown", key => {
+            switch(key.keyCode) {
+                case 37:
+                case 65:
+                    move = -this.getWidth() / 4;
+                    break;
+                case 39:
+                case 68:
+                    move = this.getWidth() / 4;
+                    break;
+            }
+        })
+        document.addEventListener("keyup", key => {
+            move = 0;
+        })
     }
 
     listenMouse() {
@@ -54,6 +69,7 @@ class game {
     }
 
     update() {
+        this.g.x += move;
         this.render();
     }
 
@@ -79,7 +95,7 @@ class game {
     }
 
     drawGun() {
-
+        this.g.draw();
     }
 
     clearScreen() {
