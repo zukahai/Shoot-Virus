@@ -17,6 +17,7 @@ class game {
         this.render();
         vis[0] = new virus(this, game_W / 2, 0, this.getWidth() * 7, 3);
         this.g = new gun(this, game_W / 2, game_H - this.getWidth() * 3);
+        this.b = new bullet(this, this.g.x, this.g.y - this.getWidth() / 2);
 
         this.loop();
 
@@ -94,10 +95,15 @@ class game {
         this.drawGun();
         for (let i = 0; i < vis.length; i++)
             vis[i].draw();
+        this.drawBullet();
     }
 
     drawGun() {
         this.g.draw();
+    }
+
+    drawBullet() {
+        this.b.draw();
     }
 
     clearScreen() {
