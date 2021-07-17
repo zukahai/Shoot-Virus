@@ -3,6 +3,8 @@ let c = 0;
 vis = [];
 move = 0;
 
+let count = 0;
+
 class game {
     constructor() {
         this.canvas = null;
@@ -17,7 +19,7 @@ class game {
         this.render();
         vis[0] = new virus(this, game_W / 2, 0, this.getWidth() * 7, 3);
         this.g = new gun(this, game_W / 2, game_H - this.getWidth() * 3);
-        this.b = new bullet(this, this.g.x, this.g.y - this.getWidth() / 2);
+        this.b = [];
 
         this.loop();
 
@@ -30,13 +32,13 @@ class game {
             switch(key.keyCode) {
                 case 37:
                 case 65:
-                    move = -this.getWidth() / 4;
-                    this.g.chAngle = -5;
+                    move = -this.getWidth() / 2;
+                    this.g.chAngle = -2 * this.getWidth();;
                     break;
                 case 39:
                 case 68:
-                    move = this.getWidth() / 4;
-                    this.g.chAngle = 5;
+                    move = this.getWidth() / 2;
+                    this.g.chAngle = 2 * this.getWidth();
                     break;
             }
         })
@@ -72,7 +74,15 @@ class game {
     }
 
     update() {
+        count++;
         this.g.x += move;
+        for (let i = 0; i < this.b.length; i++)
+            if (this.b[i].y < 0)
+                this.b.splice(i, 1);
+        for (let i = 0; i < this.b.length; i++)
+            this.b[i].y -= this.getWidth();
+        if (count % 3 == 0)
+            this.b[this.b.length] = new bullet(this, this.g.x, this.g.y - this.getWidth() / 2);
         this.render();
     }
 
@@ -87,6 +97,7 @@ class game {
             game_W = this.canvas.width;
             game_H = this.canvas.height;
             c = game_W / document.documentElement.clientWidth;
+            this.g = new gun(this, game_W / 2, game_H - this.getWidth() * 3);
         }
     }
 
@@ -103,7 +114,8 @@ class game {
     }
 
     drawBullet() {
-        this.b.draw();
+        for (let i = 0; i < this.b.length; i++)
+            this.b[i].draw();
     }
 
     clearScreen() {
