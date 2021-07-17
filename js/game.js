@@ -2,8 +2,9 @@ game_W = 0, game_H = 0;
 let c = 0;
 vis = [];
 move = 0;
-
+score = 0;
 count = 0;
+newSize = 0;
 
 class game {
     constructor() {
@@ -17,7 +18,8 @@ class game {
         this.context = this.canvas.getContext("2d");
         document.body.appendChild(this.canvas);
         this.render();
-        vis[0] = new virus(this, game_W / 2, 0, this.getWidth() * 7, 3);
+        vis[0] = new virus(this, game_W / 2, 0, 20, 3);
+        newSize = 20;
         this.g = new gun(this, game_W / 2, game_H - this.getWidth() * 3);
         this.b = [];
 
@@ -55,10 +57,18 @@ class game {
                 if (Math.sqrt((this.b[i].x - vis[j].x) * (this.b[i].x - vis[j].x) + (this.b[i].y - vis[j].y) * (this.b[i].y - vis[j].y)) < vis[j].size / 2) {
                     this.b.splice(i, 1);
                     vis[j].value -= 1;
+                    score++;
                     break;
                 }
             }
         }
+    }
+
+    checkClear() {
+        for (let i = 0; i < vis.length; i++)
+            if (!vis[i].disable)
+                return false;
+        return true;
     }
 
     checkDie() {
@@ -78,10 +88,12 @@ class game {
     }
 
     update() {
+        this.render();
         if (count < 0)
             return;
         if (this.checkDie() && count > 0) {
-            window.alert("You loss!");
+            window.alert("You loss!\n" + "Your Score: " + score);
+            move = this.g.chAngle = 0;
             count = -99999999;
         }
         count++;
@@ -94,7 +106,11 @@ class game {
             this.b[i].y -= this.getWidth();
         if (count % 2 == 0)
             this.b[this.b.length] = new bullet(this, this.g.x, this.g.y - this.getWidth() / 2);
-        this.render();
+        
+        if (count % 1000 == 0 || this.checkClear()) {
+            newSize +=  score / 100;
+            vis[vis.length] = new virus(this, game_W / 2, 0, newSize, 3);
+        }
     }
 
  
@@ -118,10 +134,17 @@ class game {
         for (let i = 0; i < vis.length; i++)
             vis[i].draw();
         this.drawBullet();
+        this.drawScore();
     }
 
     drawGun() {
         this.g.draw();
+    }
+
+    drawScore() {
+        this.context.font = this.getWidth() / 1.5 + 'px Arial Black';
+        this.context.fillStyle = "#FF00CC";
+        this.context.fillText("Score: " + score, this.getWidth(), this.getWidth());
     }
 
     drawBullet() {

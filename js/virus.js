@@ -2,9 +2,10 @@ var virus_Im = new Image();
 virus_Im.src = "images/virus.png";
 
 class virus{
-    constructor (game, x, y, size, level) {
+    constructor (game, x, y, value, level) {
         this.game = game;
-        this.size = size;
+        this.value = value;
+        this.VALUE = value;
         this.x = x;
         this.y = y;
         this.level = level;
@@ -20,7 +21,22 @@ class virus{
         this.acceleration = this.game.getWidth() / 100;
         this.disable = false;
         this.chAngle = (Math.random() < 0.5) ? 1.5 : -1.5;
-        this.value = Math.round(this.size / 2);
+        this.value = Math.round(this.value);
+        if (this.value <= 0)
+            this.value = 1;
+        switch (this.level) {
+            case 1:
+                this.size = 2 * this.game.getWidth();
+                break;
+            case 2:
+                this.size = 4 * this.game.getWidth();
+                break;
+            case 3:
+                this.size = 6 * this.game.getWidth();
+                break;
+            default:
+                this.size = 0;
+        }
     }
 
     update() {
@@ -42,8 +58,8 @@ class virus{
 
         if (this.value <= 0) {
             if (this.level > 1) {
-                vis[vis.length] = new virus(this.game, this.x, this.y, this.size / 2, this.level - 1);
-                vis[vis.length] = new virus(this.game, this.x, this.y, this.size / 2, this.level - 1);
+                vis[vis.length] = new virus(this.game, this.x, this.y, this.VALUE / 2, this.level - 1);
+                vis[vis.length] = new virus(this.game, this.x, this.y, this.VALUE / 2, this.level - 1);
             } 
             this.disable = true;
         }
