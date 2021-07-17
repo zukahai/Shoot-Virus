@@ -19,8 +19,8 @@ class game {
         this.context = this.canvas.getContext("2d");
         document.body.appendChild(this.canvas);
         this.render();
-        vis[0] = new virus(this, game_W / 2, 0, 20, 3);
-        newSize = 20;
+        vis[0] = new virus(this, game_W / 2, 0, 10, 3);
+        newSize = 10;
         this.g = new gun(this, game_W / 2, game_H - this.getWidth() * 3);
         this.b = [];
 
@@ -87,8 +87,11 @@ class game {
 
     checkClear() {
         for (let i = 0; i < vis.length; i++)
-            if (!vis[i].disable)
+            if (vis[i].disable == false) {
+                vis = vis.splice(i, vis.length);
                 return false;
+            }
+        // console.log(vis);
         return true;
     }
 
