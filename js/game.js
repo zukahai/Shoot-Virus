@@ -1,5 +1,7 @@
 game_W = 0, game_H = 0;
 let c = 0;
+vis = [];
+
 
 class game {
     constructor() {
@@ -13,7 +15,7 @@ class game {
         this.context = this.canvas.getContext("2d");
         document.body.appendChild(this.canvas);
         this.render();
-        this.v = new virus(this, game_W / 2, game_H / 2, 100);
+        vis[0] = new virus(this, game_W / 2, 0, this.getWidth() * 7, 3);
         this.loop();
 
         this.listenMouse();
@@ -65,7 +67,8 @@ class game {
 
     draw() {
         this.clearScreen();
-        this.v.draw();
+        for (let i = 0; i < vis.length; i++)
+            vis[i].draw();
     }
 
     clearScreen() {
