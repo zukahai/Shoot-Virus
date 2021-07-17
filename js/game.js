@@ -2,6 +2,12 @@ game_W = 0, game_H = 0;
 let c = 0;
 vis = [];
 
+var gun_Im = new Image();
+gun_Im.src = "images/gun.png";
+
+var wheel_im = new Image();
+wheel_im.src = "images/wheel.png";
+
 
 class game {
     constructor() {
@@ -67,8 +73,13 @@ class game {
 
     draw() {
         this.clearScreen();
+        this.drawGun();
         for (let i = 0; i < vis.length; i++)
             vis[i].draw();
+    }
+
+    drawGun() {
+
     }
 
     clearScreen() {
