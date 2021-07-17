@@ -12,7 +12,7 @@ class game {
         this.canvas = document.createElement("canvas");
         this.context = this.canvas.getContext("2d");
         document.body.appendChild(this.canvas);
-
+        this.v = new virus(this, 100);
         this.render();
         this.loop();
 
@@ -65,6 +65,7 @@ class game {
 
     draw() {
         this.clearScreen();
+        this.v.draw();
     }
 
     clearScreen() {
