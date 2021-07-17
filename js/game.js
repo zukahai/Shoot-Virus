@@ -6,6 +6,7 @@ score = 0;
 count = 0;
 newSize = 0;
 Xtouch = -1;
+L = R = false;
 
 class game {
     constructor() {
@@ -58,16 +59,32 @@ class game {
                 case 65:
                     move = -this.getWidth() / 2;
                     this.g.chAngle = -2 * this.getWidth();;
+                    L = true;
                     break;
                 case 39:
                 case 68:
                     move = this.getWidth() / 2;
                     this.g.chAngle = 2 * this.getWidth();
+                    R = true;
                     break;
             }
         })
         document.addEventListener("keyup", key => {
-            move = this.g.chAngle = 0;
+            if (key.keyCode == 37 || key.keyCode == 65)
+                L = false;
+            if (key.keyCode == 39 || key.keyCode == 68)
+                R = false;
+            if (!L && !R)
+                move = this.g.chAngle = 0;
+            else {
+                if (L) {
+                    move = -this.getWidth() / 2;
+                    this.g.chAngle = -2 * this.getWidth();;
+                } else {
+                    move = this.getWidth() / 2;
+                    this.g.chAngle = 2 * this.getWidth();
+                }
+            }
         })
     }
 
@@ -91,7 +108,6 @@ class game {
                 vis = vis.splice(i, vis.length);
                 return false;
             }
-        // console.log(vis);
         return true;
     }
 
