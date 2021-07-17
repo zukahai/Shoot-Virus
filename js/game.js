@@ -135,9 +135,9 @@ class game {
 
         if (Xtouch != -1) {
             if (this.g.x < Xtouch)
-                this.g.x += Math.abs(this.g.x - Xtouch) / 5;
+                this.g.x += Math.abs(this.g.x - Xtouch) / 3;
             else
-                this.g.x -= Math.abs(this.g.x - Xtouch) / 5;
+                this.g.x -= Math.abs(this.g.x - Xtouch) / 3;
         }
     }
 
