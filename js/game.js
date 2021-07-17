@@ -3,7 +3,7 @@ let c = 0;
 vis = [];
 move = 0;
 
-let count = 0;
+count = 0;
 
 class game {
     constructor() {
@@ -23,12 +23,13 @@ class game {
 
         this.loop();
 
-        this.listenMouse();
         this.listenKeyboard();
     }
 
     listenKeyboard() {
         document.addEventListener("keydown", key => {
+            if (count < 0)
+                return;
             switch(key.keyCode) {
                 case 37:
                 case 65:
@@ -47,24 +48,27 @@ class game {
         })
     }
 
-    listenMouse() {
-        document.addEventListener("mousedown", evt => {
-            var x = evt.offsetX == undefined ? evt.layerX : evt.offsetX;
-            var y = evt.offsetY == undefined ? evt.layerY : evt.offsetY;
-        })
-
-        document.addEventListener("mousemove", evt => {
-            var x = evt.offsetX == undefined ? evt.layerX : evt.offsetX;
-            var y = evt.offsetY == undefined ? evt.layerY : evt.offsetY;
-        })
-
-        document.addEventListener("mouseup", evt => {
-            var x = evt.offsetX == undefined ? evt.layerX : evt.offsetX;
-            var y = evt.offsetY == undefined ? evt.layerY : evt.offsetY;
-        })
+    collision() {
+        for (let i = 0; i < this.b.length; i++) {
+            for (let j = 0; j < vis.length; j++)
+                if (!vis[j].disable) {
+                if (Math.sqrt((this.b[i].x - vis[j].x) * (this.b[i].x - vis[j].x) + (this.b[i].y - vis[j].y) * (this.b[i].y - vis[j].y)) < vis[j].size / 2) {
+                    this.b.splice(i, 1);
+                    vis[j].value -= 1;
+                    break;
+                }
+            }
+        }
     }
 
-
+    checkDie() {
+        for (let j = 0; j < vis.length; j++)
+            if (!vis[j].disable) 
+                if (Math.sqrt((this.g.x - vis[j].x) * (this.g.x - vis[j].x) + (this.g.y - vis[j].y) * (this.g.y - vis[j].y)) < vis[j].size / 2)
+                    return true;
+        return false;
+    }
+ 
     loop() {
         this.update();
         this.draw();
@@ -74,14 +78,21 @@ class game {
     }
 
     update() {
+        if (count < 0)
+            return;
+        if (this.checkDie() && count > 0) {
+            window.alert("You loss!");
+            count = -99999999;
+        }
         count++;
         this.g.x += move;
+        this.collision();
         for (let i = 0; i < this.b.length; i++)
             if (this.b[i].y < 0)
                 this.b.splice(i, 1);
         for (let i = 0; i < this.b.length; i++)
             this.b[i].y -= this.getWidth();
-        if (count % 3 == 0)
+        if (count % 2 == 0)
             this.b[this.b.length] = new bullet(this, this.g.x, this.g.y - this.getWidth() / 2);
         this.render();
     }

@@ -20,7 +20,7 @@ class virus{
         this.acceleration = this.game.getWidth() / 100;
         this.disable = false;
         this.chAngle = (Math.random() < 0.5) ? 1.5 : -1.5;
-        this.value = Math.floor(this.size / 2);
+        this.value = Math.round(this.size / 2);
     }
 
     update() {
@@ -40,7 +40,6 @@ class virus{
         this.x += this.dx;
         this.y += this.dy;
 
-        this.value--;
         if (this.value <= 0) {
             if (this.level > 1) {
                 vis[vis.length] = new virus(this.game, this.x, this.y, this.size / 2, this.level - 1);
@@ -53,7 +52,8 @@ class virus{
     draw() {
         if (this.disable)
             return;
-        this.update();
+        if (count > 0)
+            this.update();
         this.game.context.save();
         this.game.context.translate(this.x, this.y);
         this.game.context.rotate(this.toRadian(this.angle));

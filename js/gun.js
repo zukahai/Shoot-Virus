@@ -14,10 +14,10 @@ class gun {
     }
 
     update() {
-        if (this.x < 0)
-            this.x = 0;
-        if (this.x > game_W)
-            this.x = game_W;
+        if (this.x < this.game.getWidth())
+            this.x = this.game.getWidth();
+        if (this.x > game_W - this.game.getWidth())
+            this.x = game_W - this.game.getWidth();
         this.angle += this.chAngle;
     }
 
