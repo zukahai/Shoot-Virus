@@ -5,6 +5,7 @@ move = 0;
 score = 0;
 count = 0;
 newSize = 0;
+Xtouch = -1;
 
 class game {
     constructor() {
@@ -24,9 +25,29 @@ class game {
         this.b = [];
 
         this.loop();
-
+        this.listenTouch();
         this.listenKeyboard();
     }
+
+    listenTouch() {
+        document.addEventListener("touchmove", evt => {
+            if (count < 0)
+                return;
+            Xtouch = evt.touches[0].pageX - (document.documentElement.clientWidth - game_W) / 2;
+        })
+
+        document.addEventListener("touchstart", evt => {
+            if (count < 0)
+                return;
+            Xtouch = evt.touches[0].pageX - (document.documentElement.clientWidth - game_W) / 2;
+        })
+
+        document.addEventListener("touchend", evt => {   
+            Xtouch = -1;
+        })
+    }
+
+    sl
 
     listenKeyboard() {
         document.addEventListener("keydown", key => {
@@ -110,6 +131,13 @@ class game {
         if (count % 1000 == 0 || this.checkClear()) {
             newSize +=  score / 100;
             vis[vis.length] = new virus(this, game_W / 2, 0, newSize, 3);
+        }
+
+        if (Xtouch != -1) {
+            if (this.g.x < Xtouch)
+                this.g.x += Math.abs(this.g.x - Xtouch) / 5;
+            else
+                this.g.x -= Math.abs(this.g.x - Xtouch) / 5;
         }
     }
 
