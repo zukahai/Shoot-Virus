@@ -6,6 +6,13 @@ class bullet {
         this.game = game;
         this.x = x;
         this.y = y;
+        this.acceleration = this.game.getWidth() / 20;
+        this.v = this.game.getWidth() / 2;
+    }
+
+    run() {
+        this.y -= this.v;
+        this.v += this.acceleration;
     }
 
     draw() {

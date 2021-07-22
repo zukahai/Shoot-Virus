@@ -141,7 +141,7 @@ class game {
             if (this.b[i].y < 0)
                 this.b.splice(i, 1);
         for (let i = 0; i < this.b.length; i++)
-            this.b[i].y -= this.getWidth() / 2;
+            this.b[i].run();
         if (count % 2 == 0)
             this.b[this.b.length] = new bullet(this, this.g.x, this.g.y - this.getWidth() / 2);
         
